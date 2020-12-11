@@ -1,16 +1,14 @@
-from kivy.app import App
-from kivy.uix.label import Label
+def my_superfunction():
+    print('What an awesome print')
 
 
-class MainApp(App):
-    def build(self):
-        label = Label(text='Hello from Kivy',
-                      size_hint=(.5, .5),
-                      pos_hint={'center_x': .5, 'center_y': .5})
-
-        return label
+def main():
+    print('My first git program')
+    print('And I change it every day')
+    print('Again')
+    print('UFO came and added this line')
+    my_superfunction()
 
 
 if __name__ == '__main__':
-    app = MainApp()
-    app.run()
+    main()

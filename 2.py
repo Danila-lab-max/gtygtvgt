@@ -94,13 +94,14 @@ if __name__ == '__main__':
     cor_y = 400
     point = 0
     point1 = 0
+    delta_point = 1
     clock = pygame.time.Clock()
     while running:
         ver = random.choice([1] + [0] * 100)
         if point // 100 != point1 // 100:
             print(point // 100)
         point1 = point
-        point += 5
+        point += delta_point
         screen.fill(pygame.Color('white'))
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -116,18 +117,30 @@ if __name__ == '__main__':
                 if event.key == pygame.K_w:
                     v += 10
                     v_show += 1
+                    delta_point += 0.1
                 if event.key == pygame.K_s:
-                    v -= 10
-                    v_show -= 1
+                    if v_show == 50:
+                        delta_point = 0
+                    else:
+                        delta_point -= 0.1
+                    if v_show > 50:
+                        v -= 10
+                        v_show -= 1
                 else:
                     break
         if ver == 1:
             tim = 0
             drawing = True
             x1, y1 = random.randint(190, 390), 0
-            list1.append([-1, -1])
-            list.append([x1, y1])
-        draw(screen, str(point // 100), str(v_show))
+            for i in list:
+                if not (x1 <= i[0] - 100 or x1 >= i[0]):
+                    drawing = False
+                    print('Error')
+                    break
+            if drawing:
+                list1.append([-1, -1])
+                list.append([x1, y1])
+        draw(screen, str(int(point // 100)), str(v_show))
         surf1 = pygame.image.load('road.jpg')
         surf = pygame.transform.scale(surf1, (300, 501))
         rect = surf.get_rect(
@@ -146,7 +159,7 @@ if __name__ == '__main__':
             if point // 100 != point1 // 100:
                 print(point // 100)
             point1 = point
-            point += 1
+            point += delta_point
             surf1 = pygame.image.load('3 (2).png')
             surf = pygame.transform.scale(surf1, (80, 100))
             rect = surf.get_rect(
@@ -167,4 +180,3 @@ if __name__ == '__main__':
                 point = 0
         screen2.blit(screen, (0, 0))
         pygame.display.flip()
-

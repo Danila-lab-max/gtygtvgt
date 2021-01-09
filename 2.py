@@ -3,6 +3,7 @@ import pygame
 import random
 import os
 import sys
+from pygame.locals import *
 
 
 def terminate():
@@ -11,7 +12,7 @@ def terminate():
 
 
 def draw(screen, score, speed):
-    screen.fill((255, 255, 255))
+    #screen.fill((255, 255, 255))
     font = pygame.font.Font(None, 30)
     text = font.render("Score:" + score, True, (100, 255, 100))
     screen.blit(text, (0, 0))
@@ -95,9 +96,16 @@ if __name__ == '__main__':
     point = 0
     point1 = 0
     delta_point = 1
+    surf1 = pygame.image.load('desert.jpg')
+    surf = pygame.transform.scale(surf1, (100, 501))
+    rect = surf.get_rect(
+        bottomright=(400, 501))
+    screen.blit(surf, rect)
     clock = pygame.time.Clock()
     while running:
         ver = random.choice([1] + [0] * 100)
+        ver1 = random.choice([1] + [0] * 50)
+        ver2 = random.choice([1] + [0] * 50)
         if point // 100 != point1 // 100:
             print(point // 100)
         point1 = point
@@ -133,13 +141,17 @@ if __name__ == '__main__':
             drawing = True
             x1, y1 = random.randint(190, 390), 0
             for i in list:
-                if not (x1 <= i[0] - 100 or x1 >= i[0]):
+                if not (x1 <= i[0] - 100 or x1 >= i[0] + 100):
                     drawing = False
-                    print('Error')
                     break
             if drawing:
                 list1.append([-1, -1])
                 list.append([x1, y1])
+        surf1 = pygame.image.load('desert.jpg')
+        surf = pygame.transform.scale(surf1, (501, 501))
+        rect = surf.get_rect(
+            bottomright=(501, 501))
+        screen.blit(surf, rect)
         draw(screen, str(int(point // 100)), str(v_show))
         surf1 = pygame.image.load('road.jpg')
         surf = pygame.transform.scale(surf1, (300, 501))

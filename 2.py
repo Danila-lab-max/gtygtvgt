@@ -12,7 +12,7 @@ def terminate():
 
 
 def draw(screen, score, speed):
-    #screen.fill((255, 255, 255))
+    # screen.fill((255, 255, 255))
     font = pygame.font.Font(None, 30)
     text = font.render("Score:" + score, True, (100, 255, 100))
     screen.blit(text, (0, 0))
@@ -44,12 +44,36 @@ clock = pygame.time.Clock()
 
 
 def start_screen():
-    intro_text = ["Правила:",
-                  "Нужно",
-                  "передвигать машину",
-                  "клавишами,",
-                  "не врезаясь в другие машины.",
-                  "W - увелечение скорости, S - уменьшение."]
+    intro_text = ["Правила: Нужно передвигать машину",
+                  "клавишами, не врезаясь в другие машины."]
+
+    fon = pygame.transform.scale(load_image('p.jpg'), screen_size)
+    screen.blit(fon, (0, 0))
+    font = pygame.font.Font(None, 30)
+    text_coord = 40
+    for line in intro_text:
+        string_rendered = font.render(line, 1, pygame.Color('black'))
+        intro_rect = string_rendered.get_rect()
+        text_coord += 10
+        intro_rect.top = text_coord
+        intro_rect.x = 10
+        text_coord += intro_rect.height
+        screen.blit(string_rendered, intro_rect)
+
+        while True:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    terminate()
+                elif event.type == pygame.KEYDOWN or \
+                        event.type == pygame.MOUSEBUTTONDOWN:
+                    return
+            pygame.display.flip()
+            clock.tick(FPS)
+
+
+def finish_screen(score):
+    intro_text = ["Конец!!!",
+                  "Ваш результат - " + str(score)]
 
     fon = pygame.transform.scale(load_image('p.jpg'), screen_size)
     screen.blit(fon, (0, 0))
@@ -70,7 +94,8 @@ def start_screen():
                 terminate()
             elif event.type == pygame.KEYDOWN or \
                     event.type == pygame.MOUSEBUTTONDOWN:
-                return
+                if event.key == K_d:
+                    return
         pygame.display.flip()
         clock.tick(FPS)
 
@@ -78,7 +103,7 @@ def start_screen():
 if __name__ == '__main__':
     start_screen()
     pygame.init()
-    pygame.display.set_caption('Шарики')
+    pygame.display.set_caption('Машинки')
     size = width, height = 501, 501
     screen = pygame.display.set_mode(size)
     running = True
@@ -104,10 +129,8 @@ if __name__ == '__main__':
     clock = pygame.time.Clock()
     while running:
         ver = random.choice([1] + [0] * 100)
-        ver1 = random.choice([1] + [0] * 50)
-        ver2 = random.choice([1] + [0] * 50)
-        if point // 100 != point1 // 100:
-            print(point // 100)
+        #if point // 100 != point1 // 100:
+        #    print(point // 100)
         point1 = point
         point += delta_point
         screen.fill(pygame.Color('white'))
@@ -168,8 +191,8 @@ if __name__ == '__main__':
         screen.blit(screen2, (0, 0))
         s = v * clock.tick() / 1000  # и, если надо, текущий прямоугольник
         for i in range(len(list)):
-            if point // 100 != point1 // 100:
-                print(point // 100)
+            #if point // 100 != point1 // 100:
+            #    print(point // 100)
             point1 = point
             point += delta_point
             surf1 = pygame.image.load('3 (2).png')
@@ -179,8 +202,8 @@ if __name__ == '__main__':
             screen.blit(surf, rect)
             # list[i][0] += s / list1[i][0]
             list[i][1] -= s / list1[i][1]
-            if list[i][0] == cor_x or list[i][1] == cor_y:
-                point = 0
+            #if list[i][0] == cor_x or list[i][1] == cor_y:
+            #    point = 0
         l = list.copy()
         list = []
         for i in l:
@@ -189,6 +212,15 @@ if __name__ == '__main__':
             else:
                 list.append(i)
             if -30 <= i[0] - cor_x <= 30 and -30 <= i[1] - cor_y <= 30:
+                l.clear()
+                list.clear()
+                v_show = 60
+                v = 100
+                cor_x = 250
+                cor_y = 400
+                finish_screen(str(int(point // 100)))
                 point = 0
+                point1 = 0
+                delta_point = 1
         screen2.blit(screen, (0, 0))
         pygame.display.flip()

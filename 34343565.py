@@ -95,6 +95,7 @@ def main():
 
 
 def finish_screen(score, score0):
+    global result
     if int(score) > int(score0):
         score0 = score
     intro_text = ["Конец!!!",
@@ -123,10 +124,10 @@ def finish_screen(score, score0):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 terminate()
-            elif event.type == pygame.KEYDOWN or \
-                    event.type == pygame.MOUSEBUTTONDOWN:
-                if event.key == K_d:
-                    return
+            #elif event.type == pygame.KEYDOWN or \
+            #        event.type == pygame.MOUSEBUTTONDOWN:
+            #    if event.key == K_d:
+            #        return
         pygame.display.flip()
         clock.tick(FPS)
 

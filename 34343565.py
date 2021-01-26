@@ -12,7 +12,6 @@ names = cur.execute("""SELECT name FROM users""").fetchall()
 result = cur.execute("""SELECT * FROM users""").fetchall()
 result.sort(key=lambda x: x[1])
 result.reverse()
-print(result)
 
 pygame.init()
 screen = pygame.display.set_mode((640, 480))
@@ -61,6 +60,9 @@ class InputBox:
         self.rect.w = width
 
     def draw(self, screen):
+        font = pygame.font.Font(None, 30)
+        text = font.render("Введите своё имя:", True, (0, 0, 0))
+        screen.blit(text, (110, 40))
         # Blit the text.
         screen.blit(self.txt_surface, (self.rect.x + 5, self.rect.y + 5))
         # Blit the rect.
@@ -223,7 +225,6 @@ if __name__ == '__main__':
     pygame.quit()
     pygame.init()
     score0 = 0
-    print(names)
     if (name_user,) not in names:
         score0 = 0
         result = cur.execute("""INSERT INTO users VALUES (?, ?)""", (name_user, 0)).fetchall()
@@ -232,7 +233,6 @@ if __name__ == '__main__':
         for i in result:
             if name_user in i:
                 score0 = i[1]
-                print(score0)
                 break
     pygame.display.set_caption('Машинки')
     size = width, height = 501, 501
